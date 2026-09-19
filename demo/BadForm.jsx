@@ -3,21 +3,21 @@ export default function BadForm() {
 
   return (
     <form className="signup">
-      <img src="/logo.svg" />
+      <img src="/logo.svg" alt="Acme" />
 
-      <h2></h2>
+      <h2>Create your account</h2>
 
-      <label>Email address</label>
-      <input id="email" type="email" autoFocus />
+      <label htmlFor="email">Email address</label>
+      <input id="email" type="email" />
 
       <label htmlFor="password">Password</label>
       <input id="password" type="password" />
 
-      <div onClick={submit} className="btn-primary">
+      <button type="button" onClick={submit} className="btn-primary">
         Create account
-      </div>
+      </button>
 
-      <a href="#" onClick={submit}>
+      <a href="/terms">
         Read the terms
       </a>
     </form>
