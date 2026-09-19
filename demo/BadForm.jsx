@@ -3,7 +3,7 @@ export default function BadForm() {
 
   return (
     <form className="signup">
-      <img src="/logo.svg" alt="Acme" />
+      <img src="/logo.svg" />
 
       <h2>Create your account</h2>
 
