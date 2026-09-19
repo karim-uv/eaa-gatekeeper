@@ -1,5 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import { lint } from "./lint.js";
+import { changedLineMap, lintable, partition } from "./diff.js";
 
 async function run(): Promise<void> {
   const token = process.env.GITHUB_TOKEN;
@@ -12,14 +14,7 @@ async function run(): Promise<void> {
   const pullNumber = pr.number;
   const headSha = (pr.head as { sha: string }).sha;
 
-  // context.sha is the ephemeral merge commit on pull_request events; the
-  // commit status in step 5 must go to head.sha instead. Logged to prove it.
-  core.info(`PR #${pullNumber}`);
-  core.info(`head.sha    = ${headSha}`);
-  core.info(`context.sha = ${github.context.sha}`);
-
   const octokit = github.getOctokit(token);
-
   const { data: files } = await octokit.rest.pulls.listFiles({
     owner,
     repo,
@@ -27,27 +22,16 @@ async function run(): Promise<void> {
     per_page: 100,
   });
 
-  const fixture = files.map((f) => ({
-    filename: f.filename,
-    status: f.status,
-    patch: f.patch,
-  }));
-  core.info("----- BEGIN fixture.json -----");
-  core.info(JSON.stringify(fixture, null, 2));
-  core.info("----- END fixture.json -----");
+  const targets = lintable(files).map((f) => f.filename);
+  core.info(`PR #${pullNumber} at ${headSha}`);
+  core.info(`linting ${targets.length} changed file(s): ${targets.join(", ") || "none"}`);
 
-  await octokit.rest.pulls.createReviewComment({
-    owner,
-    repo,
-    pull_number: pullNumber,
-    commit_id: headSha,
-    path: "demo/BadForm.jsx",
-    line: 6,
-    side: "RIGHT",
-    body: "hello from EAA Gatekeeper",
-  });
+  const violations = await lint(targets);
+  const { inline, summary } = partition(violations, changedLineMap(files));
 
-  core.info("posted inline comment on demo/BadForm.jsx:6");
+  core.info(`${violations.length} violation(s): ${inline.length} in diff, ${summary.length} outside`);
+  for (const v of inline) core.info(`  in-diff  ${v.file}:${v.line}  ${v.ruleId}`);
+  for (const v of summary) core.info(`  outside  ${v.file}:${v.line}  ${v.ruleId}`);
 }
 
 run().catch((err: unknown) => {
