@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 export interface RuleEntry {
   wcag: { sc: string; name: string; level: string };
   en301549: string;
+  fix: string;
+  prompt: string;
 }
 
 const mapPath = fileURLToPath(new URL("../data/rule-map.json", import.meta.url));

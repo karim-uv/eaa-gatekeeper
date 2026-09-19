@@ -1,26 +1,38 @@
 {
   "jsx-a11y/alt-text": {
     "wcag": { "sc": "1.1.1", "name": "Non-text Content", "level": "A" },
-    "en301549": "9.1.1.1"
+    "en301549": "9.1.1.1",
+    "fix": "Add an `alt` attribute — concise descriptive text if the image conveys information, or `alt=\"\"` if it is purely decorative so assistive technology skips it.",
+    "prompt": "Add an appropriate alt attribute to the image. Use concise descriptive text if the image conveys information, or an empty alt=\"\" if it is purely decorative."
   },
   "jsx-a11y/heading-has-content": {
     "wcag": { "sc": "1.3.1", "name": "Info and Relationships", "level": "A" },
-    "en301549": "9.1.3.1"
+    "en301549": "9.1.3.1",
+    "fix": "Give the heading visible text content, or remove the empty heading element so it does not appear in the document outline.",
+    "prompt": "Give the empty heading meaningful text content that describes the section it introduces, or remove the heading element entirely if no heading is needed there."
   },
   "jsx-a11y/click-events-have-key-events": {
     "wcag": { "sc": "2.1.1", "name": "Keyboard", "level": "A" },
-    "en301549": "9.2.1.1"
+    "en301549": "9.2.1.1",
+    "fix": "Replace the clickable `<div>` with a real `<button type=\"button\">`, which is focusable and fires on Enter and Space for free.",
+    "prompt": "Replace the non-interactive element that has an onClick handler with a real button element, so it is keyboard focusable and operable with Enter and Space. Preserve the existing click handler and visible text. Do not add tabIndex or manual key handlers to a div; use the native button element."
   },
   "jsx-a11y/no-autofocus": {
     "wcag": { "sc": "2.4.3", "name": "Focus Order", "level": "A" },
-    "en301549": "9.2.4.3"
+    "en301549": "9.2.4.3",
+    "fix": "Remove the `autoFocus` prop — it moves focus before the user has oriented, which disrupts screen reader and magnifier users.",
+    "prompt": "Remove the autoFocus prop from this input. Do not replace it with a focus() call on mount; focus should only move in response to a deliberate user action."
   },
   "jsx-a11y/label-has-associated-control": {
     "wcag": { "sc": "3.3.2", "name": "Labels or Instructions", "level": "A" },
-    "en301549": "9.3.3.2"
+    "en301549": "9.3.3.2",
+    "fix": "Point the label at its input with `htmlFor` matching the input's `id`, or nest the input inside the label.",
+    "prompt": "Associate this label with its form control by adding an htmlFor attribute matching the id of the corresponding input. Do not change the visible label text."
   },
   "jsx-a11y/anchor-is-valid": {
     "wcag": { "sc": "4.1.2", "name": "Name, Role, Value", "level": "A" },
-    "en301549": "9.4.1.2"
+    "en301549": "9.4.1.2",
+    "fix": "Use `<button>` for actions and reserve `<a href>` for navigation to a real destination — an anchor with `href=\"#\"` is announced as a link that goes nowhere.",
+    "prompt": "This anchor is used as a button and has a placeholder href. Either give it a real destination URL if it navigates, or convert it to a button element if it performs an action. Preserve the existing handler and visible text."
   }
 }
